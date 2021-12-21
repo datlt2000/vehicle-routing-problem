@@ -154,7 +154,7 @@ def main():
     shortest_path = JobScheduling(position=data, num_staff=4)
     s = shortest_path.solve()
     s += 'end \n -----------------\n'
-    with open("../result/vrp.txt", 'a') as f:
+    with open("./result/vrp.txt", 'a') as f:
         f.write(file_name + '\n')
         f.write(s)
     print("end")

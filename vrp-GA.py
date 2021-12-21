@@ -1,8 +1,11 @@
+import math
 import random
 from random import randrange
 from time import time
 import copy
 import sys
+from data import read_dataset
+import matplotlib.pyplot as plt
 
 
 # ============================ GENETIC ALGORITHM =======================================
@@ -58,12 +61,14 @@ class Individual(object):
 
 def decode_vrp(chromosome):
     ls = []
-    truck = [cities.get(0)]
+    truck = [0]
     for k in chromosome:
-        truck.append(cities.get(k))
+        truck.append(k)
         if k == 0:
             ls.append(truck)
-            truck = [cities.get(0)]
+            truck = [0]
+    truck.append(0)
+    ls.append(truck)
     return ls
 
 
@@ -86,12 +91,13 @@ def penalty_capacity(chromosome):
 
 
 def fitness_vrp(chromosome):
-    def distance_trip(index, city):
-        w = distances.get(index)
-        return w[city]
+    def distance_trip(fr, to):
+        w = distances.get(fr + 1)
+        q = distances.get(to + 1)
+        return math.sqrt(math.pow((w['x'] - q['x']), 2) + math.pow((w['y'] - q['y']), 2))
 
-    penalty_cap = penalty_capacity(chromosome)
-
+    # penalty_cap = penalty_capacity(chromosome)
+    penalty_cap = 0
     actual_chromosome = [0] + chromosome + [0]
     fitness_value = []
     for i in range(0, num_truck + 1):
@@ -102,12 +108,12 @@ def fitness_vrp(chromosome):
         if actual_chromosome[i] == 0 and i != 0:
             count += 1
         fitness_value[int(count)] += distance_trip(actual_chromosome[i], actual_chromosome[i + 1]) \
-                                     + (50 * penalty_cap) + capacity_customer[actual_chromosome[i]]
-    min_value = sys.maxsize
+                                     + (50 * penalty_cap) + distances[actual_chromosome[i] + 1]['d']
+    max_value = 0
     for value in fitness_value:
-        if 0 < value < min_value:
-            min_value = value
-    return min_value
+        if value > max_value:
+            max_value = value
+    return max_value
 
 
 # =============================== FIRST PART: GENETIC OPERATORS======================================
@@ -130,9 +136,7 @@ class Population:
         self.individual = individual
         self.tour_size = tour_size
         self.population_size = population_size
-        n_parents = round(population_size * ratio_cross)
-        self.n_parents = (n_parents if n_parents % 2 == 0 else n_parents - 1)
-        self.n_directs = self.population_size - self.n_parents
+        self.ratio_cross = ratio_cross
         self.prob_mutate = prob_mutate
 
     def initial_population(self):
@@ -165,13 +169,25 @@ class Population:
                 childs.extend(self.individual.crossover(parents[i], parents[i + 1]))
             return childs
 
-        directs = self.tournament_selection(population, self.n_directs)
-        cross_parent = self.tournament_selection(population, self.n_parents)
-        crosses = cross_over(cross_parent)
+        selected = self.tournament_selection(population, self.population_size)
+        random.shuffle(selected)
+        n_parents = round(self.population_size * self.ratio_cross)
+        crosses = cross_over(selected[:n_parents])
         mutations = mutate(crosses)
-        new_generation = directs + mutations
+        new_generation = mutations + selected
 
         return new_generation
+
+
+def visualize(data):
+    for i in data:
+        x = []
+        y = []
+        for j in i:
+            x.append(distances[j + 1]['x'])
+            y.append(distances[j + 1]['y'])
+        plt.plot(x, y)
+    plt.show()
 
 
 def genetic_algorithm_t(population, generation):
@@ -184,6 +200,7 @@ def genetic_algorithm_t(population, generation):
     print("Chromosome: ", best_chromosome)
     genotype = population.individual.decode(best_chromosome)
     print("Solution: ", (genotype, population.individual.fitness(best_chromosome)))
+    visualize(genotype)
     return genotype, population.individual.fitness(best_chromosome)
 
     # =================================THIRD PART: EXPERIMENTATION=================================================
@@ -197,16 +214,17 @@ def genetic_algorithm_t(population, generation):
 
 
 def first_part_ga(intances):
-    genes = [0, 0, 0, 1, 2, 3, 4, 5, 6, 7]
-    ind = Individual(genes, len(cities), lambda x: decode_vrp(x), lambda y: fitness_vrp(y))
-    population = Population(ind, tour_size=2, population_size=100, ratio_cross=0.8, prob_mutate=0.05)
+    num_custom = len(distances)
+    genes = [i for i in range(num_custom)] + [0] * (num_truck - 2)
+    ind = Individual(genes, num_custom, lambda x: decode_vrp(x), lambda y: fitness_vrp(y))
+    population = Population(ind, tour_size=5, population_size=100, ratio_cross=0.8, prob_mutate=0.05)
     cont = 0
     print(
         "-----------------------------Executing FIRST PART: VRP -------------------------------- \n")
-    print("Office = ", cities.get(0))
+    print("Office = ", str(0))
     print("")
     tiempo_inicial_t2 = time()
-    while cont <= intances:
+    while cont < intances:
         print("Intance 1: ")
         genetic_algorithm_t(population=population, generation=200)
         cont += 1
@@ -217,27 +235,12 @@ def first_part_ga(intances):
 
 # ---------------------------------------- AUXILIARY DATA FOR TESTING --------------------------------
 
-# CONSTANTS
-
-cities = {0: 'Office', 1: 'Cadiz', 2: 'Cordoba', 3: 'Granada', 4: 'Huelva', 5: 'Jaen', 6: 'Malaga', 7: 'Sevilla'}
-
-# Distance between each pair of cities
-
-w0 = [0, 454, 317, 165, 528, 222, 223, 410]
-w1 = [453, 0, 253, 291, 210, 325, 234, 121]
-w2 = [317, 252, 0, 202, 226, 108, 158, 140]
-w3 = [165, 292, 201, 0, 344, 94, 124, 248]
-w4 = [508, 210, 235, 346, 0, 336, 303, 94]
-w5 = [222, 325, 116, 93, 340, 0, 182, 247]
-w6 = [223, 235, 158, 125, 302, 185, 0, 206]
-w7 = [410, 121, 141, 248, 93, 242, 199, 0]
-distances = {0: w0, 1: w1, 2: w2, 3: w3, 4: w4, 5: w5, 6: w6, 7: w7}
-
-capacity_customer = {0: 0, 1: 19, 2: 30, 3: 16, 4: 23, 5: 11, 6: 31, 7: 15, 8: 28}
-num_truck = 4
 if __name__ == "__main__":
+    file_name = "P/a.vrp"
+    distances = read_dataset(file_name)
+    num_truck = 4
     # Constant that is an instance object
-    num_ga_intances = 10
+    num_ga_intances = 1
     print("EXECUTING ", num_ga_intances, " INSTANCES ")
     first_part_ga(num_ga_intances)
     print(
