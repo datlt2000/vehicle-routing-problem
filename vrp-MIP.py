@@ -42,16 +42,15 @@ class JobScheduling:
             self.solver.Add(sum(self.x[k, i, j] for j in range(self.num_customer) for k in range(self.num_staff)) == 1)
 
         # if staff k visit i, he must move from i
-        for i in range(1, self.num_customer):
+        for i in range(self.num_customer):
             # self.solver.Add(sum(self.x[j, i] for j in range(self.num_customer)) == 1)
             for k in range(self.num_staff):
                 self.solver.Add(sum(self.x[k, j, i] for j in range(self.num_customer)) == sum(
                     self.x[k, i, j] for j in range(self.num_customer)))
 
-        # after work every staff go back office
+        # number of staff must go
         for k in range(self.num_staff):
-            self.solver.Add(sum(self.x[k, 0, i] for i in range(1, self.num_customer)) == sum(
-                self.x[k, i, 0] for i in range(1, self.num_customer)))
+            self.solver.Add(sum(self.x[k, 0, i] for i in range(1, self.num_customer)) == 1)
 
         # MTZ sub tour constrain
         for i in range(1, self.num_customer):
@@ -138,13 +137,13 @@ class JobScheduling:
                         break
             routing[i].append(0)
             s += '-->' + str(0) + '\n'
-            print(s)
+        print(s)
         self.visualize(routing, self.position)
         return s
 
 
 def main():
-    file_name = "P/a.vrp"
+    file_name = "P/P-n16-k8.vrp"
     # path = input("path to file: ")
     print("reading data ...")
     print("-----------------")
