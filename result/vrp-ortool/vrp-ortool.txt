@@ -1,33 +1,62 @@
+a.vrp
+------------------------------
 Route for vehicle 0:
  0 ->  7 ->  6 -> 0
 Distance of the route: 99m
-
- optimal: 99############################Route for vehicle 1:
+Route for vehicle 1:
  0 ->  3 ->  8 -> 0
 Distance of the route: 97m
-
- optimal: 99############################Route for vehicle 2:
+Route for vehicle 2:
  0 ->  4 ->  1 -> 0
 Distance of the route: 87m
-
- optimal: 99############################Route for vehicle 3:
+Route for vehicle 3:
  0 ->  5 ->  2 -> 0
 Distance of the route: 101m
+ optimal: 101
 
- optimal: 101############################Route for vehicle 0:
- 0 ->  4 ->  11 ->  6 -> 0
-Distance of the route: 131m
+------------------------------
+b.vrp
+------------------------------
+Route for vehicle 0:
+ 0 ->  14 ->  9 ->  13 -> 0
+Distance of the route: 87m
+Route for vehicle 1:
+ 0 ->  15 ->  12 ->  3 -> 0
+Distance of the route: 94m
+Route for vehicle 2:
+ 0 ->  7 ->  5 ->  2 -> 0
+Distance of the route: 94m
+Route for vehicle 3:
+ 0 ->  8 ->  1 -> 0
+Distance of the route: 91m
+Route for vehicle 4:
+ 0 ->  4 ->  11 -> 0
+Distance of the route: 88m
+Route for vehicle 5:
+ 0 ->  10 ->  6 -> 0
+Distance of the route: 90m
+Route for vehicle 6:
+ 0 -> 0
+Distance of the route: 0m
+Route for vehicle 7:
+ 0 -> 0
+Distance of the route: 0m
+ optimal: 94
+-------------------------
+e.vrp
+-------------------------
+Route for vehicle 0:
+ 0 ->  2 ->  10 ->  7 -> 0
+Distance of the route: 89m
+Route for vehicle 1:
+ 0 ->  6 ->  3 ->  1 ->  11 -> 0
+Distance of the route: 103m
+Route for vehicle 2:
+ 0 ->  12 -> 0
+Distance of the route: 114m
+Route for vehicle 3:
+ 0 ->  9 ->  5 ->  4 ->  8 -> 0
+Distance of the route: 109m
 
- optimal: 131############################Route for vehicle 1:
- 0 ->  1 ->  10 ->  8 ->  7 -> 0
-Distance of the route: 131m
-
- optimal: 131############################Route for vehicle 2:
- 0 ->  13 ->  3 ->  12 ->  15 -> 0
-Distance of the route: 124m
-
- optimal: 131############################Route for vehicle 3:
- 0 ->  5 ->  14 ->  9 ->  2 -> 0
-Distance of the route: 127m
-
- optimal: 131############################
+ optimal: 114
+-------------------------

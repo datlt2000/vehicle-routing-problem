@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 def create_data_model():
     """Stores the data for the problem."""
     data = {}
-    file_name = "custom/c.vrp"
+    file_name = "custom/e.vrp"
     distance = read_dataset(file_name)
     data['distance_matrix'] = distance
     data['num_vehicles'] = 4
@@ -59,10 +59,11 @@ def print_solution(data, manager, routing, solution):
         max_route_distance = max(route_distance, max_route_distance)
         with open("./result/vrp-ortool/vrp-ortool.txt", 'a') as f:
             f.write(plan_output)
-            f.write('\n optimal: ' + str(max_route_distance))
-            f.write("############################")
         vi_data.append(vehicle_route)
     print('Maximum of the route distances: {}m'.format(max_route_distance))
+    with open("./result/vrp-ortool/vrp-ortool.txt", 'a') as f:
+        f.write('\n optimal: ' + str(max_route_distance))
+        f.write("\n-------------------------\n")
     visualize(vi_data, data)
 
 
