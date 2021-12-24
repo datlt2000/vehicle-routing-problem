@@ -1,5 +1,5 @@
-NAME : P-n16-k8
-COMMENT : (Augerat et al, No of trucks: 8, Optimal value: 450)
+NAME : P-n9-k4
+COMMENT : (Augerat et al, No of trucks: 4, Optimal value: 102)
 TYPE : CVRP
 DIMENSION : 16
 EDGE_WEIGHT_TYPE : EUC_2D
