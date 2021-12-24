@@ -201,6 +201,9 @@ def genetic_algorithm_t(population, generation):
     genotype = population.individual.decode(best_chromosome)
     print("Solution: ", (genotype, population.individual.fitness(best_chromosome)))
     visualize(genotype)
+    with open("./result/ga/vrp-ga.txt", 'a') as f:
+        f.write('\n##############################\n')
+        f.write("Solution: " + str(genotype) + "\n" + str(population.individual.fitness(best_chromosome)) + "\n")
     return genotype, population.individual.fitness(best_chromosome)
 
     # =================================THIRD PART: EXPERIMENTATION=================================================
