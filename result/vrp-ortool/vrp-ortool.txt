@@ -1,62 +1,99 @@
-a.vrp
-------------------------------
+----------a.vrp-------------
 Route for vehicle 0:
- 0 ->  7 ->  6 -> 0
-Distance of the route: 99m
-Route for vehicle 1:
- 0 ->  3 ->  8 -> 0
-Distance of the route: 97m
-Route for vehicle 2:
- 0 ->  4 ->  1 -> 0
-Distance of the route: 87m
-Route for vehicle 3:
- 0 ->  5 ->  2 -> 0
+ 0 ->  2 ->  5 -> 0
 Distance of the route: 101m
- optimal: 101
-
-------------------------------
-b.vrp
-------------------------------
-Route for vehicle 0:
- 0 ->  14 ->  9 ->  13 -> 0
-Distance of the route: 87m
 Route for vehicle 1:
- 0 ->  15 ->  12 ->  3 -> 0
-Distance of the route: 94m
-Route for vehicle 2:
- 0 ->  7 ->  5 ->  2 -> 0
-Distance of the route: 94m
-Route for vehicle 3:
- 0 ->  8 ->  1 -> 0
-Distance of the route: 91m
-Route for vehicle 4:
- 0 ->  4 ->  11 -> 0
+ 0 ->  4 ->  1 -> 0
 Distance of the route: 88m
+Route for vehicle 2:
+ 0 ->  8 ->  3 -> 0
+Distance of the route: 98m
+Route for vehicle 3:
+ 0 ->  6 ->  7 -> 0
+Distance of the route: 100m
+
+ optimal: 101
+ solved time: 0.018027782440185547
+-------------------------
+-------b.vrp-------------
+Route for vehicle 0:
+ 0 ->  12 ->  15 ->  11 ->  10 -> 0
+Distance of the route: 105m
+Route for vehicle 1:
+ 0 ->  2 ->  6 -> 0
+Distance of the route: 105m
+Route for vehicle 2:
+ 0 ->  7 -> 0
+Distance of the route: 33m
+Route for vehicle 3:
+ 0 ->  4 ->  1 -> 0
+Distance of the route: 88m
+Route for vehicle 4:
+ 0 ->  8 ->  3 -> 0
+Distance of the route: 79m
 Route for vehicle 5:
- 0 ->  10 ->  6 -> 0
-Distance of the route: 90m
+ 0 -> 0
+Distance of the route: 0m
 Route for vehicle 6:
  0 -> 0
 Distance of the route: 0m
 Route for vehicle 7:
- 0 -> 0
-Distance of the route: 0m
- optimal: 94
+ 0 ->  5 ->  14 ->  9 ->  13 -> 0
+Distance of the route: 100m
+
+ optimal: 105
+ solved time: 0.15515661239624023
 -------------------------
-e.vrp
+-----------c.vrp--------------
+Route for vehicle 0:
+ 0 ->  8 ->  15 ->  9 ->  7 ->  1 ->  3 ->  4 -> 0
+Distance of the route: 5747m
+Route for vehicle 1:
+ 0 ->  14 ->  16 ->  21 ->  19 -> 0
+Distance of the route: 5724m
+Route for vehicle 2:
+ 0 ->  6 ->  5 ->  10 ->  12 ->  13 -> 0
+Distance of the route: 5818m
+Route for vehicle 3:
+ 0 ->  2 ->  18 ->  20 ->  17 ->  11 -> 0
+Distance of the route: 5777m
+
+ optimal: 5818
+ solved time: 0.16464591026306152
+------------------------------
+-----------d.vrp--------------
+Route for vehicle 0:
+ 0 ->  15 ->  18 ->  23 ->  2 ->  3 -> 0
+Distance of the route: 253m
+Route for vehicle 1:
+ 0 ->  13 ->  21 ->  31 ->  19 ->  17 ->  6 -> 0
+Distance of the route: 239m
+Route for vehicle 2:
+ 0 ->  22 ->  9 ->  8 ->  11 ->  4 ->  28 -> 0
+Distance of the route: 253m
+Route for vehicle 3:
+ 0 ->  29 ->  10 ->  25 ->  5 ->  20 ->  27 ->  24 -> 0
+Distance of the route: 251m
+Route for vehicle 4:
+ 0 ->  14 ->  30 ->  16 ->  12 ->  1 ->  7 ->  26 -> 0
+Distance of the route: 211m
+
+ optimal: 253
+ solved time: 0.9494585990905762
 -------------------------
+----------e.vrp-----------
 Route for vehicle 0:
  0 ->  2 ->  10 ->  7 -> 0
 Distance of the route: 89m
 Route for vehicle 1:
  0 ->  6 ->  3 ->  1 ->  11 -> 0
-Distance of the route: 103m
+Distance of the route: 105m
 Route for vehicle 2:
  0 ->  12 -> 0
 Distance of the route: 114m
 Route for vehicle 3:
  0 ->  9 ->  5 ->  4 ->  8 -> 0
-Distance of the route: 109m
+Distance of the route: 110m
 
  optimal: 114
--------------------------
+ solved time: 0.06771731376647949

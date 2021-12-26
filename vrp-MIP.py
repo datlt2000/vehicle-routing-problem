@@ -50,7 +50,7 @@ class JobScheduling:
 
         # number of staff must go
         for k in range(self.num_staff):
-            self.solver.Add(sum(self.x[k, 0, i] for i in range(1, self.num_customer)) == 1)
+            self.solver.Add(sum(self.x[k, 0, i] for i in range(self.num_customer)) == 1)
 
         # MTZ sub tour constrain
         for i in range(1, self.num_customer):
@@ -73,12 +73,13 @@ class JobScheduling:
 
     @staticmethod
     def distince(f, t):
-        return math.sqrt(math.pow(f['x'] - t['x'], 2) + math.pow(f['y'] - t['y'], 2))
+        d = math.sqrt(math.pow(f['x'] - t['x'], 2) + math.pow(f['y'] - t['y'], 2))
+        return round(d)
 
     def set_objective(self):
         self.solver.Minimize(self.obj)
 
-    def solve(self):
+    def solve(self, limit_time):
         self.create_solver()
         self.create_var()
         self.add_constrain()
@@ -86,6 +87,7 @@ class JobScheduling:
         print("solving")
         print("-------------------")
         start_time = time.time()
+        self.solver.SetTimeLimit(limit_time)
         status = self.solver.Solve()
         if status == pywraplp.Solver.OPTIMAL or status == pywraplp.Solver.FEASIBLE:
             s = self.print_result()
@@ -143,7 +145,7 @@ class JobScheduling:
 
 
 def main():
-    file_name = "custom/a.vrp"
+    file_name = "custom/e.vrp"
     # path = input("path to file: ")
     print("reading data ...")
     print("-----------------")
@@ -151,11 +153,11 @@ def main():
     print(data)
     # Creates the solver.
     shortest_path = JobScheduling(position=data, num_staff=4)
-    s = shortest_path.solve()
+    s = shortest_path.solve(limit_time=1800000)
     s += 'end \n -----------------\n'
-    with open("./result/mip/vrp.txt", 'a') as f:
-        f.write(file_name + '\n')
-        f.write(s)
+    # with open("./result/mip/vrp.txt", 'a') as f:
+    #     f.write(file_name + '\n')
+    #     f.write(s)
     print("end")
     print("------------------")
 

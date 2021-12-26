@@ -94,10 +94,9 @@ def fitness_vrp(chromosome):
     def distance_trip(fr, to):
         w = distances.get(fr + 1)
         q = distances.get(to + 1)
-        return math.sqrt(math.pow((w['x'] - q['x']), 2) + math.pow((w['y'] - q['y']), 2))
+        d = round(math.sqrt(math.pow((w['x'] - q['x']), 2) + math.pow((w['y'] - q['y']), 2)))
+        return round(d)
 
-    # penalty_cap = penalty_capacity(chromosome)
-    penalty_cap = 0
     actual_chromosome = [0] + chromosome + [0]
     fitness_value = []
     for i in range(0, num_truck + 1):
@@ -108,7 +107,7 @@ def fitness_vrp(chromosome):
         if actual_chromosome[i] == 0 and i != 0:
             count += 1
         fitness_value[int(count)] += distance_trip(actual_chromosome[i], actual_chromosome[i + 1]) \
-                                     + (50 * penalty_cap) + distances[actual_chromosome[i] + 1]['d']
+                                     + distances[actual_chromosome[i] + 1]['d']
     max_value = 0
     for value in fitness_value:
         if value > max_value:
@@ -158,10 +157,11 @@ class Population:
 
     def new_generation_t(self, population):
         def mutate(cross):
+            mutation = []
             for i in cross:
                 if random.random() < self.prob_mutate:
-                    self.individual.mutation(i)
-            return cross
+                    mutation.append(self.individual.mutation(i))
+            return mutation
 
         def cross_over(parents):
             childs = []
@@ -174,7 +174,7 @@ class Population:
         n_parents = round(self.population_size * self.ratio_cross)
         crosses = cross_over(selected[:n_parents])
         mutations = mutate(crosses)
-        new_generation = mutations + selected
+        new_generation = mutations + selected + crosses
 
         return new_generation
 
@@ -192,11 +192,11 @@ def visualize(data):
 
 def genetic_algorithm_t(population, generation):
     individuals = population.initial_population()
-
+    best_chromosome = min(individuals, key=population.individual.fitness)
     for _ in range(generation):
         individuals = population.new_generation_t(individuals)
-
-    best_chromosome = min(individuals, key=population.individual.fitness)
+        individuals.append(best_chromosome)
+        best_chromosome = min(individuals, key=population.individual.fitness)
     print("Chromosome: ", best_chromosome)
     genotype = population.individual.decode(best_chromosome)
     print("Solution: ", (genotype, population.individual.fitness(best_chromosome)))
@@ -229,7 +229,7 @@ def first_part_ga(intances):
     tiempo_inicial_t2 = time()
     while cont < intances:
         print("Intance 1: ")
-        genetic_algorithm_t(population=population, generation=200)
+        genetic_algorithm_t(population=population, generation=1000)
         cont += 1
     tiempo_final_t2 = time()
     print("\n")
@@ -239,7 +239,7 @@ def first_part_ga(intances):
 # ---------------------------------------- AUXILIARY DATA FOR TESTING --------------------------------
 
 if __name__ == "__main__":
-    file_name = "P/a.vrp"
+    file_name = "custom/a.vrp"
     distances = read_dataset(file_name)
     num_truck = 4
     # Constant that is an instance object

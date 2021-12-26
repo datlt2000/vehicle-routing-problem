@@ -13,17 +13,20 @@ from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
 from data import read_dataset
 import matplotlib.pyplot as plt
+import time
+
 
 def create_data_model():
     """Stores the data for the problem."""
     data = {}
-    file_name = "custom/e.vrp"
+    file_name = "custom/d.vrp"
     distance = read_dataset(file_name)
     data['distance_matrix'] = distance
-    data['num_vehicles'] = 4
+    data['num_vehicles'] = 5
     data['depot'] = 0
     print(data)
     return data
+
 
 def visualize(routes, distance):
     for i in routes:
@@ -35,7 +38,8 @@ def visualize(routes, distance):
         plt.plot(x, y)
     plt.show()
 
-def print_solution(data, manager, routing, solution):
+
+def print_solution(data, manager, routing, solution, excuted_time):
     """Prints solution on console."""
     print(f'Objective: {solution.ObjectiveValue()}')
     max_route_distance = 0
@@ -63,6 +67,7 @@ def print_solution(data, manager, routing, solution):
     print('Maximum of the route distances: {}m'.format(max_route_distance))
     with open("./result/vrp-ortool/vrp-ortool.txt", 'a') as f:
         f.write('\n optimal: ' + str(max_route_distance))
+        f.write("\n solved time: " + str(excuted_time))
         f.write("\n-------------------------\n")
     visualize(vi_data, data)
 
@@ -86,9 +91,10 @@ def main():
         from_node = manager.IndexToNode(from_index)
         to_node = manager.IndexToNode(to_index)
         d = data['distance_matrix'][to_node + 1]['d'] + math.sqrt(
-            math.pow(data['distance_matrix'][from_node + 1]['x'] - data['distance_matrix'][to_node + 1]['x'], 2) + math.pow(
+            math.pow(data['distance_matrix'][from_node + 1]['x'] - data['distance_matrix'][to_node + 1]['x'],
+                     2) + math.pow(
                 data['distance_matrix'][from_node + 1]['y'] - data['distance_matrix'][to_node + 1]['y'], 2))
-        return d
+        return round(d)
 
     transit_callback_index = routing.RegisterTransitCallback(distance_callback)
 
@@ -100,7 +106,7 @@ def main():
     routing.AddDimension(
         transit_callback_index,
         0,  # no slack
-        3000,  # vehicle maximum travel distance
+        10000,  # vehicle maximum travel distance
         True,  # start cumul to zero
         dimension_name)
     distance_dimension = routing.GetDimensionOrDie(dimension_name)
@@ -110,13 +116,16 @@ def main():
     search_parameters = pywrapcp.DefaultRoutingSearchParameters()
     search_parameters.first_solution_strategy = (
         routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC)
-
+    search_parameters.time_limit.seconds = 1800
+    search_parameters.local_search_metaheuristic = (
+        routing_enums_pb2.LocalSearchMetaheuristic.TABU_SEARCH)
     # Solve the problem.
+    start = time.time()
     solution = routing.SolveWithParameters(search_parameters)
-
+    end = time.time()
     # Print solution on console.
     if solution:
-        print_solution(data, manager, routing, solution)
+        print_solution(data, manager, routing, solution, end - start)
     else:
         print('No solution found !')
 
